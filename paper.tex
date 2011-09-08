@@ -1,0 +1,283 @@
+\documentclass[10pt]{article}
+
+% amsmath package, useful for mathematical formulas
+\usepackage{amsmath}
+% amssymb package, useful for mathematical symbols
+\usepackage{amssymb}
+
+% graphicx package, useful for including eps and pdf graphics
+% include graphics with the command \includegraphics
+\usepackage{graphicx}
+
+% cite package, to clean up citations in the main text. Do not remove.
+\usepackage{cite}
+
+\usepackage{color} 
+
+% Use doublespacing - comment out for single spacing
+\usepackage{setspace} 
+\doublespacing
+
+
+% Use the PLoS provided bibtex style
+% \bibliographystyle{PLoS2009}
+\bibliographystyle{unsrt}
+
+% Remove brackets from numbering in List of References
+\makeatletter
+\renewcommand{\@biblabel}[1]{\quad#1.}
+\makeatother
+
+
+% Leave date blank
+\date{}
+
+\pagestyle{myheadings}
+%% ** EDIT HERE **
+%% Please insert a running head of 30 characters or less.  
+%% Include it twice, once between each set of braces
+\newcommand\titlestring{Stochastic tree-adjoining grammars for modeling retrotransposons}
+\newcommand\authorstring{
+Lawrence Uricchio, Ian Holmes
+}
+
+\markboth{\titlestring}{\titlestring}
+
+
+%% ** EDIT HERE **
+%% PLEASE INCLUDE ALL MACROS BELOW
+
+\usepackage{setspace}
+\doublespacing
+
+
+
+\usepackage{array}
+
+
+% Labels & references for sections, figures and tables
+% Comment out \secref and \seclabel for PLoS -- they don't have numbered section references.
+\newcommand{\secref}[1]{Section~\ref{sec:#1}}
+\newcommand{\seclabel}[1]{\label{sec:#1}}
+\newcommand{\secname}[1]{``#1''}  % PLoS-style section names
+
+% "Text S1", "Text S2", etc.
+\newcommand{\supptext}[1]{Text S#1}
+
+% "Dataset S1", "Dataset S2", etc.
+\newcommand{\dataset}[1]{Dataset S#1}
+
+% Appendix
+\newcommand{\appref}[1]{Appendix~\ref{app:#1}}
+\newcommand{\applabel}[1]{\label{app:#1}}
+
+% Figure
+\newcommand{\figref}[1]{Figure~\ref{fig:#1}}
+\newcommand{\figlabel}[1]{\label{fig:#1}}
+
+% Table
+\newcommand{\tabnum}[1]{\ref{tab:#1}}
+\newcommand{\tabref}[1]{Table~\tabnum{#1}}
+\newcommand{\tablabel}[1]{\label{tab:#1}}
+
+% Equation
+\newcommand{\eqnref}[1]{Equation~\ref{eqn:#1}}
+\newcommand{\eqnlabel}[1]{\label{eqn:#1}}
+
+
+% need cite, check me, and other notes to self
+\newcommand\needcite{{\bf [CITE]}}
+\newcommand\checkme{{\bf [CHECK]}}
+
+
+
+%% END MACROS SECTION
+
+\begin{document}
+
+% Title must be 150 words or less
+\begin{flushleft}
+  {\Large
+    \textbf{\titlestring}
+  }
+\\
+\authorstring
+\end{flushleft}
+
+
+% Please keep the abstract between 250 and 300 words
+%\newpage
+\section*{Abstract}
+TAGs and parsers for biological repeats.
+
+% Table of contents
+\tableofcontents
+
+% Please keep the Author Summary between 150 and 200 words
+% Use first person. PLoS ONE authors please skip this step. 
+% Author Summary not valid for PLoS ONE submissions.   
+%\newpage
+%\section{Author Summary}
+
+
+\section{Introduction}
+
+Transposable elements (TEs), or {\em transposons}, are of great interest in molecular evolution \cite{Feschotte2007}, and an important aspect of genome annotation.
+There are several specializations in the overall task of transposon annotation:
+PILER \cite{EdgarMyers2005} specializes in {\em de novo} transposon discovery,
+while REPCLASS specializes in classification of found transposons \cite{FeschotteKeswaniEtAl2009}.
+
+Many such programs classify TEs by their general structural features, particularly their terminal repeats:
+LTRs (Long Terminal Repeats) and TIRs (Terminal Inverted Repeats).
+
+It is useful to build databases and profiles of known transposon families, for the purpose of classifying new ones.
+To date, the most comprehensive database of known transposons is REPBASE \cite{KapitonovJurka2008},
+whose profiles rely only on primary sequence homology models;
+that is, they do not make explicit use of terminal repeat structure.
+
+A promising approach, that combines profile Hidden Markov Models (HMMs) of primary sequence homology (at the level of TE protein domains)
+with fast algorithms for detecting LTRs,
+is taken by LTRdigest \cite{pmid19786494}.
+The purpose of this paper is to represent the hybrid modeling approach of LTRdigest using formal grammars.
+
+\section{Definitions}
+
+\subsection{Tree-Adjoining Grammars}
+
+We define a minimal normal form of Tree-Adjoining Grammars (TAGs)
+suited to biological sequence analysis,
+as opposed to the linguistic representation elsewhere \cite{JoshiSchabes97}.
+TAGs have previously been used in bioinformatics
+to model pseudoknots and other RNA structures \cite{MatsuiEtAl2005,ChiangJoshiSearls2006}
+and to model local duplications (Hickey and Blanchette, pers. comm.).
+
+\newcommand\grammar{{\cal G}}
+\newcommand\nodelabels{{\cal N}}
+\newcommand\terminals{{\cal T}}
+\newcommand\startsymbol{S}
+\newcommand\rules{{\cal R}}
+\newcommand\weight{{\cal W}}
+
+A TAG is a tuple $\grammar=(\nodelabels,\terminals,\startsymbol,\rules,\weight)$ where
+$\nodelabels$ is a set of {\em node labels},
+$\terminals$ is a set of {\em terminals} (disjoint from $\nodelabels$),
+$\startsymbol \in \nodelabels$ is a distinguished {\em start label},
+$\rules$ is a set of {\em transformation rules}
+and $\weight:\rules \to [0,\infty)$ is a {\em rule weight function}.
+
+\newcommand\outseq{Z}
+\newcommand\outsubseq[2]{\outseq[#1 \ldots #2]}
+
+The process of generating an output sequence $\outseq \in \terminals^\ast$ using $\grammar$
+is referred to as a {\em derivation} of $\outseq$.
+The derivation consists of repeated local application of transformation rules to {\em intermediate trees}, beginning with the initial tree
+
+$\startsymbol$
+
+
+{\bf more to go here}
+
+
+\subsection{A parsing algorithm}
+
+We can define a general parsing algorithm for TAGs
+that is the equivalent of the CYK (Cocke-Younger-Kasami) algorithm for SCFGs, as follows.
+
+For the given output sequence $\outseq \in \terminals^\ast$, let $\outsubseq{i}{j+1}$ denote the substring from $i$ through $j$ inclusive, for $1 \leq i \leq j \leq |\outseq|$.
+Let $\outsubseq{i}{i} = \epsilon$.
+
+Define some indicator functions to match output substrings to rules
+\begin{eqnarray*}
+\Delta(i,j,x) & = & \delta \left( \outsubseq{i}{j}\ =\ x \right) \\
+\Delta(i,x) & = & \Delta(i,i+|x|,x)
+\end{eqnarray*}
+
+\subsubsection{The dynamic programming matrix}
+
+\newcommand\m{M}
+
+
+{\bf more to go here}
+
+
+\section{A simple retrotransposon grammar}
+\seclabel{RetroGrammar}
+
+An example of an observed indexed grammar is the following class of grammars that can generate context-free structures flanked by LTRs (long terminal repeats).
+
+\subsection{SCFG and LTR components}
+
+\subsection{Developing the SCFG sub-grammar for transposon contents}
+
+\begin{itemize}
+\item $X$ generates a nucleotide sampled from the background distribution
+\item $X_L$ generates $\ell$ background nucleotides, where $\ell \sim L$
+\item $F_N$ samples a DNA sequence coding for family $N$ from PFAM \cite{Pfam2008}
+\item $I_L$ generates an intron of length $\ell \sim L$ (can be emitted by $F_N$)
+\item $T_A$ generates a terminal inverted repeat, then transits to $A$
+\end{itemize}
+We can also make transitions back to $\startsymbol$ to generate a nested transposon insertion.
+
+The grammar so described has some similarities to LTRdigest \cite{pmid19786494} and TENest \cite{KronmillerWise2008}.
+
+Note a flaw of the framework is that, since the index string representing the ``consensus'' LTR must be directly observed at least once in the output
+(in fact, it corresponds to the 5'-most repeat in this grammar), 
+we cannot allow a nested transposon insertion {\em within} that LTR.
+
+
+\subsection{Supplying external hints}
+
+The parsing algorithm uses ${\cal O}(|\outseq|^4)$ memory and ${\cal O}(|\outseq|^4)$ time.
+The hope is to accelerate it significantly by using externally-supplied ``hints''
+as constraints on the locations of various features (especially the LTRs).
+
+The hints file should include
+\begin{itemize}
+\item A set of tuples $(i,j,k,l)$ indicating that $\outsubseq{i}{j}$ and $\outsubseq{k}{l}$ are (respectively) the 5' and 3' repeat regions of an LTR
+\item A set of tuples $(i,j,N)$ indicating that $\outsubseq{i}{j}$ is a match to PFAM family $N$
+\end{itemize}
+
+These hints can be generated by fast tools, e.g. suffix-tree based algorithms for finding LTRs \cite{pmid16819780},
+or GeneWise for finding DNA sequences that code for PFAM protein domains \cite{BirneyEtAl04}.
+
+A very quick heuristic that might achieve most of the benefits of a more rigorous ``hints'' constraint
+would be to divide the genome into windows and only run the grammar on windows which contain $K$ or more of the appropriate hints.
+
+\section{Glossary of mathematical notation}
+
+\noindent
+\begin{tabular}{ll}
+Symbol & Meaning \\
+\hline
+$\grammar$ & Grammar \\
+$\nodelabels$ & Set of node labels \\
+$\terminals$ & Set of terminals \\
+$\rules$ & Set of transformation rules \\
+$\weight$ & Rule weight function \\
+$\epsilon$ & The empty string \\
+$\terminals^\ast$ & Set of strings over $\terminals$, including the empty string \\
+$\outseq$ & Output sequence \\
+$|\outseq|$ & Length of $\outseq$ \\
+$\outsubseq{i}{j+1}$ & Substring of $\outseq$ from $i$ to $j$ inclusive ($i$ starts at 1) \\
+$\outsubseq{i}{i}$ & The empty string \\
+$\m(i,j,k,l,X)$ & Max parse tree weight for $\outsubseq{k}{l}$ rooted at $X[\outsubseq{i}{j}]$ \\
+$\Delta(i,j,x)$ & Indicates if rule string $x$ matches output string $\outsubseq{i}{j}$ \\
+$\Delta(i,x)$ & Indicates if rule string $x$ matches output string $\outseq$, starting at position $i$ \\
+\end{tabular}
+
+% Do NOT remove this, even if you are not including acknowledgments
+\newpage
+\section{Acknowledgments}
+
+Our understanding of grammars applied to bioinformatics has been uplifted in conversations with
+Sean Eddy, Mark Steedman, Bonnie Webber, Aravind Joshi, David Searls, Dan Klein, and Michael Souza.
+
+\section{References}
+% The bibtex filename(s)
+\bibliography{../latex-inputs/alignment,../latex-inputs/reconstruction,../latex-inputs/duplication,../latex-inputs/genomics,../latex-inputs/ncrna,../latex-inputs/url,../latex-inputs/transposon}
+
+%\clearpage
+%\section{Figure Legends}
+
+\end{document}
+

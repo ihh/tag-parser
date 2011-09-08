@@ -1,0 +1,70 @@
+\begin{thebibliography}{10}
+
+\bibitem{Feschotte2007}
+C.~Feschotte.
+\newblock {DNA} transposons and the evolution of eukaryotic genomes.
+\newblock {\em Annual Review of Genetics}, 41:331--368, 2007.
+
+\bibitem{EdgarMyers2005}
+R.~C. Edgar and E.~W. Myers.
+\newblock {PILER}: identification and classification of genomic repeats.
+\newblock {\em Bioinformatics}, 21 Suppl 1:i152--8.
+
+\bibitem{FeschotteKeswaniEtAl2009}
+C.~Feschotte, U.~Keswani, N.~Ranganathan, M.~L. Guibotsy, and D.~Levine.
+\newblock {{E}xploring repetitive {D}{N}{A} landscapes using
+  {R}{E}{P}{C}{L}{A}{S}{S}, a tool that automates the classification of
+  transposable elements in eukaryotic genomes}.
+\newblock {\em Genome Biol Evol}, 1:205--220, 2009.
+
+\bibitem{KapitonovJurka2008}
+V.~V. Kapitonov and J.~Jurka.
+\newblock A universal classification of eukaryotic transposable elements
+  implemented in {R}epbase.
+\newblock {\em Nature reviews. Genetics}, 9(5):411--2; author reply 414.
+
+\bibitem{pmid19786494}
+S.~Steinbiss, U.~Willhoeft, G.~Gremme, and S.~Kurtz.
+\newblock {{F}ine-grained annotation and classification of de novo predicted
+  {L}{T}{R} retrotransposons}.
+\newblock {\em Nucleic Acids Res.}, 37:7002--7013, Nov 2009.
+
+\bibitem{JoshiSchabes97}
+A.~Joshi and Y.~Schabes.
+\newblock Tree-adjoining grammars, 1997.
+
+\bibitem{MatsuiEtAl2005}
+H.~Matsui, K.~Sato, and Y.~Sakakibara.
+\newblock {{P}air stochastic tree adjoining grammars for aligning and
+  predicting pseudoknot {R}{N}{A} structures}.
+\newblock {\em Bioinformatics}, 21:2611--2617, Jun 2005.
+
+\bibitem{ChiangJoshiSearls2006}
+D.~Chiang, A.~K. Joshi, and D.~B. Searls.
+\newblock {{G}rammatical representations of macromolecular structure}.
+\newblock {\em J. Comput. Biol.}, 13:1077--1100, Jun 2006.
+
+\bibitem{Pfam2008}
+R.~D. Finn, J.~Tate, J.~Mistry, P.~C. Coggill, S.~J. Sammut, Hans-Rudolf Hotz,
+  G.~Ceric, K.~Forslund, S.~R. Eddy, E.~L.~L. Sonnhammer, and A.~Bateman.
+\newblock The {P}fam protein families database.
+\newblock {\em Nucleic Acids Research}, 36(Database issue):D281--8, 2008.
+
+\bibitem{KronmillerWise2008}
+B.~A. Kronmiller and R.~P. Wise.
+\newblock {{T}{E}nest: automated chronological annotation and visualization of
+  nested plant transposable elements}.
+\newblock {\em Plant Physiol.}, 146:45--59, Jan 2008.
+
+\bibitem{pmid16819780}
+A.~Kalyanaraman and S.~Aluru.
+\newblock {{E}fficient algorithms and software for detection of full-length
+  {L}{T}{R} retrotransposons}.
+\newblock {\em J Bioinform Comput Biol}, 4:197--216, Apr 2006.
+
+\bibitem{BirneyEtAl04}
+E.~Birney, M.~Clamp, and R.~Durbin.
+\newblock {G}ene{W}ise and {G}enome{W}ise.
+\newblock {\em Genome Research}, 14(5):988--995, 2004.
+
+\end{thebibliography}

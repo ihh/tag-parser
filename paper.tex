@@ -19,6 +19,9 @@
 \doublespacing
 
 
+% Parse trees
+\usepackage{qtree}
+
 % Use the PLoS provided bibtex style
 % \bibliographystyle{PLoS2009}
 \bibliographystyle{unsrt}
@@ -172,11 +175,52 @@ The process of generating an output sequence $\outseq \in \terminals^\ast$ using
 is referred to as a {\em derivation} of $\outseq$.
 The derivation consists of repeated local application of transformation rules to {\em intermediate trees}, beginning with the initial tree
 
-$\startsymbol$
+\Tree[ .$\epsilon$ [ .$\startsymbol$ [ .$\epsilon$ ] ] ]
 
+Each ``intermediate tree'' is, formally, an ordered tree whose nodes are labeled from
+$(\nodelabels \cup \terminals^\ast)$.
 
-{\bf more to go here}
+The transformation rules can take the following forms:
 
+\tiny
+\begin{tabular}{m{.2in}m{1in}m{.2in}m{1in}}
+(1) &
+\Tree[ .$\alpha$ [ .$A$ [ .$\beta$ ] ] ]
+ & $\to$ & 
+\Tree[ .$\alpha$ [ .$B$ [ [ [ .$C$ $\epsilon$ ] ] [ [ .$\beta$ ] ] ] ] ]
+\\ \hline
+(2) &
+\Tree[ .$\alpha$ [ .$A$ [ .$\beta$ ] ] ]
+ & $\to$ & 
+\Tree[ .$\alpha$ [ .$B$ [ [ [ .$\beta$ ] ] [ [ .$C$ $\epsilon$ ] ] ] ] ]
+\\ \hline
+(3) &
+\Tree[ .$\alpha$ [ .$A$ [ .$\beta$ ] ] ]
+ & $\to$ & 
+\Tree[ .$\alpha$ [ [ [ .$C$ $\epsilon$ ] ] [ [ .$B$ $\beta$ ] ] ] ]
+\\ \hline
+(4) &
+\Tree[ .$\alpha$ [ .$A$ [ .$\beta$ ] ] ]
+ & $\to$ & 
+\Tree[ .$\alpha$ [ [ [ .$B$ $\beta$ ] ] [ [ .$C$ $\epsilon$ ] ] ] ]
+\\ \hline
+(5) &
+\Tree[ .$\alpha$ [ .$A$ [ .$\beta$ ] ] ]
+ & $\to$ & 
+\Tree[ .$\alpha$ [ .$B$ [ .$C$ $\beta$ ] ] ]
+\\ \hline
+(6) &
+\Tree[ .$\alpha$ [ .$A$ [ .$\beta$ ] ] ]
+ & $\to$ & 
+\Tree[ .$\alpha$ [ $u$ [ .$B$ [ $v$ [ $\beta$ ] $w$ ] ] $x$ ] ]
+\end{tabular}
+\normalsize
+
+Here $\alpha,\beta$ represent any subtree;
+$A \in \nodelabels$ is the source node label;
+$B,C \in (\nodelabels \cup \{\epsilon\})$ are the destination node labels;
+and
+$u,v,w,x \in \terminals^\ast$ are (possibly empty) terminal strings.
 
 \subsection{A parsing algorithm}
 

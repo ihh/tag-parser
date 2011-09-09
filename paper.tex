@@ -331,15 +331,15 @@ The DP recursion is as follows (with $B,C,u,v,w,x$ defined as in \tabref{RuleTyp
 \begin{eqnarray*}
 \lefteqn{\m(i,j,k,l,A) =} \\
 & &
-\sum_{\rho \in \rulesubset{1}{A}} W(\rho) \sum_{m=i}^j \m(m,j,k,l,B) \mtip(i,m,C) \\
+\sum_{\rho \in \rulesubset{1}{A}} \sum_{m=i}^j W(\rho) \m(m,j,k,l,B) \mtip(i,m,C) \\
 & & +
-\sum_{\rho \in \rulesubset{2}{A}} W(\rho) \sum_{n=k}^l \m(i,j,k,n,B) \mtip(n,l,C) \\
+\sum_{\rho \in \rulesubset{2}{A}} \sum_{n=k}^l W(\rho) \m(i,j,k,n,B) \mtip(n,l,C) \\
 & & +
-\sum_{\rho \in \rulesubset{3}{A}} W(\rho) \sum_{m=i}^j \m(i,m,k,l,B) \mtip(m,j,C) \\
+\sum_{\rho \in \rulesubset{3}{A}} \sum_{m=i}^j W(\rho) \m(i,m,k,l,B) \mtip(m,j,C) \\
 & & +
-\sum_{\rho \in \rulesubset{4}{A}} W(\rho) \sum_{n=k}^l \m(i,j,n,l,B) \mtip(k,n,C) \\
+\sum_{\rho \in \rulesubset{4}{A}} \sum_{n=k}^l W(\rho) \m(i,j,n,l,B) \mtip(k,n,C) \\
 & & +
-\sum_{\rho \in \rulesubset{5}{A}} W(\rho) \sum_{m=i}^j \sum_{n=k}^l \m(i,m,n,l,B) \m(m,j,k,n,C) \\
+\sum_{\rho \in \rulesubset{5}{A}} \sum_{m=i}^j \sum_{n=k}^l W(\rho) \m(i,m,n,l,B) \m(m,j,k,n,C) \\
 & & +
 \sum_{\rho \in \rulesubset{6}{A}} W(\rho) \m(i+|u|,j-|v|,k+|w|,l-|x|,B)
  \Delta(i,u) \Delta(j-|v|,v) \Delta(k,w) \Delta(l-|x|,x)
@@ -358,14 +358,14 @@ yielding the (reverse) order in which node labels must be visited in the Inside 
 \subsubsection{Length distributions}
 
 To model genomic features, it is extremely useful to augment the TAG framework with length distributions;
-that is, to allow the rule weight $\weight(\rho)$ to depend on the distances $j-i$, $k-j$, $l-k$ and on the sum of these, $l-i$.
+that is, to allow the rule weight $\weight(\rho)$ to depend on distances
+such as $m-i$, $j-m$, $n-k$, $l-n$, $n-m$, $j-i$, $k-j$, $l-k$, $l-i$ and so on.
 
-Note that the TAG framework implicitly allows some length distributions to be constructed;
-for example, the ``waiting time'' of a particular node label
-(e.g. the number of type-6 rules with $B=A$ that are applied before a rule with $B \neq A$ is eventually applied,
-so that the intermediate tree effectively ``leaves'' state $A$) is geometrically-distributed, and by arranging a series of such states,
+Note that the TAG framework implicitly allows some length distributions to be constructed, even without such augmentation;
+for example, the ``waiting time'' in a particular state is geometrically-distributed, and by arranging a series of such states,
 one can obtain other distributions, e.g. a negative binomial distribution.
-One can also obtain any distribution over a random variable $x \leq N$ by using $N$ states.
+One can also obtain any distribution over a random variable $x \leq N$ by using $N$ states,
+or approximate any distribution to some degree of precision with a finite number of states.
 However, it is often much more convenient and efficient simply to allow $\weight$ to sometimes depend directly on the inside sequence length.
 
 \section{A simple retrotransposon grammar}
@@ -441,8 +441,12 @@ $\mtip(i,l,A)$ & Inside weight for $\outsubseq{i}{l}$ rooted at $A$ \\
 \newpage
 \section{Acknowledgments}
 
-Our understanding of grammars applied to bioinformatics has been uplifted in conversations with
-Sean Eddy, Mark Steedman, Bonnie Webber, Aravind Joshi, David Searls, Dan Klein, and Michael Souza.
+Sean Eddy co-organized an excellent workshop at U.Penn, ``Language Modeling of Biological Data'',
+at which IH met Mark Steedman, Bonnie Webber and Aravind Joshi,
+and learned from them (and others) the secrets of TAGs, finite-state transducers, and mildly context-sensitive grammars.
+David Searls has been a long-time proponent of linguistics applied to bioinformatics.
+Dan Klein encouraged us to develop our own variations on grammar frameworks.
+Michael Souza introduced us to the pumping lemma and the equivalence of TAGs with various other frameworks.
 
 \section{References}
 % The bibtex filename(s)

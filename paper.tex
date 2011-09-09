@@ -322,6 +322,8 @@ Define the following boundary conditions:
 \mtip(i,i,\epsilon) & = & 1
 \end{eqnarray*}
 
+The {\em inside sequence} refers to the sequences $\outsubseq{i}{j}$ and $\outsubseq{k}{l}$ (for $\m$),
+or the sequence $\outsubseq{i}{l}$ (for $\mtip$).
 
 \subsubsection{The dynamic programming recursion}
 
@@ -353,6 +355,18 @@ followed by two transitions $C \to \epsilon$ and $B \to A$).
 The absence of null cycles implies that we can perform a topological sort of $\nodelabels$ based on the transition graph,
 yielding the (reverse) order in which node labels must be visited in the Inside algorithm.
 
+\subsubsection{Length distributions}
+
+To model genomic features, it is extremely useful to augment the TAG framework with length distributions;
+that is, to allow the rule weight $\weight(\rho)$ to depend on the distances $j-i$, $k-j$, $l-k$ and on the sum of these, $l-i$.
+
+Note that the TAG framework implicitly allows some length distributions to be constructed;
+for example, the ``waiting time'' of a particular node label
+(e.g. the number of type-6 rules with $B=A$ that are applied before a rule with $B \neq A$ is eventually applied,
+so that the intermediate tree effectively ``leaves'' state $A$) is geometrically-distributed, and by arranging a series of such states,
+one can obtain other distributions, e.g. a negative binomial distribution.
+One can also obtain any distribution over a random variable $x \leq N$ by using $N$ states.
+However, it is often much more convenient and efficient simply to allow $\weight$ to sometimes depend directly on the inside sequence length.
 
 \section{A simple retrotransposon grammar}
 \seclabel{RetroGrammar}

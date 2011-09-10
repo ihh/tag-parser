@@ -384,7 +384,7 @@ or the sequence $\outsubseq{i}{l}$ (for $\mtip$).
 
 \subsubsection{The dynamic programming recursion}
 
-The DP recursion is as follows (with $B,C,U,V,X,Y,u,v,x,y$ defined as in \tabref{RuleTypes})
+The DP recursion relation is as follows (with $B,C,U,V,X,Y,u,v,x,y$ defined as in \tabref{RuleTypes})
 \begin{eqnarray*}
 \lefteqn{\m(i,j,k,l,A) =} \\
 & &
@@ -409,8 +409,31 @@ Null cycles frequently arise via consecutive transitions of the form $A \to B$ f
 but there are other possibilities too (for example, a type-1 bifurcation rule $((\beta)A)\alpha \to ((U,\beta)C)\alpha$
 followed by two transitions $U \to \epsilon$ and $C \to A$).
 
-The absence of null cycles implies that we can perform a topological sort of $\nodelabels$ based on the transition graph,
-yielding the (reverse) order in which node labels must be visited in the Inside algorithm.
+A {\em Lexicalized TAG} (LTAG) has the property that one of $u,v,x,y$ is always a nonempty terminal string,
+guaranteeing that it contains no null cycles,
+and ensuring that every rule explicitly matches some output characters.
+LTAGs are popular in linguistics, though the constraint is possibly too stringent to be helpful for bioinformatics grammars.
+
+\subsubsection{Fill order}
+
+The absence of null cycles implies that we can perform a {\em topological sort} (topo-sort) of $\nodelabels$ based on the transition graph,
+yielding the order in which node labels must be visited in the Inside algorithm.
+
+A suitable (but non-unique) Inside fill order is as follows:
+\begin{itemize}
+ \item For $L_1 = 0$ to $|Z|$ (increasing), \quad $i = 0$ to $|Z|-L_1$ (increasing):
+ \begin{itemize}
+  \item Let $l = i + L_1$
+  \item For $A \in \nodelabels$ (topo-sorted, transition destinations before sources):
+  \begin{itemize}
+   \item For $L_2 = L_1$ to $0$ (decreasing), \quad $j = i$ to $i + L_1 - L_2$ (increasing):
+   \item Let $k = j + L_2$
+   \item Compute $\m(i,j,k,l,A)$ and store
+  \end{itemize}
+  \item Compute $\mtip(i,l,A)$ and store
+ \end{itemize}
+\end{itemize}
+
 
 \subsubsection{Length distributions}
 

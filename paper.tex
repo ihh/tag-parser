@@ -424,13 +424,18 @@ A suitable (but non-unique) Inside fill order is as follows:
  \item For $L_1 = 0$ to $|Z|$ (increasing), \quad $i = 0$ to $|Z|-L_1$ (increasing):
  \begin{itemize}
   \item Let $l = i + L_1$
+  \item For $L_2 = L_1$ to $0$ (decreasing), \quad $j = i$ to $i + L_1 - L_2$ (increasing):
+  \begin{itemize}
+   \item Let $k = j + L_2$
+   \item For $A \in \nodelabels$ (topo-sorted, transition destinations before sources):
+   \begin{itemize}
+    \item Compute $\m(i,j,k,l,A)$ and store
+   \end{itemize}
+  \end{itemize}
   \item For $A \in \nodelabels$ (topo-sorted, transition destinations before sources):
   \begin{itemize}
-   \item For $L_2 = L_1$ to $0$ (decreasing), \quad $j = i$ to $i + L_1 - L_2$ (increasing):
-   \item Let $k = j + L_2$
-   \item Compute $\m(i,j,k,l,A)$ and store
+   \item Compute $\mtip(i,l,A)$ and store
   \end{itemize}
-  \item Compute $\mtip(i,l,A)$ and store
  \end{itemize}
 \end{itemize}
 

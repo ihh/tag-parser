@@ -539,7 +539,7 @@ $i,j,k,l$ & Integer co-ordinates on $\outseq$, with $1 \leq i \leq j \leq k \leq
 $m,n$ & Integer co-ordinates on $\outseq$, with $i \leq m \leq j$ and $k \leq n \leq l$ \\
 $\outerlen, \innerlen$ & Integer lengths of $\outseq$-subsequences, with $0 \leq \innerlen = (k-j) \leq \outerlen = (l-i) \leq |\outseq|$ \\
 $\outsubseq{i}{i}$ & The empty string \\
-$\outsubseq{i}{j}$ & (For $j \geq i$) Substring of $\outseq$ from $i$ to $j-1$ inclusive \\
+$\outsubseq{i}{j}$ & (For $j > i$) Substring of $\outseq$ from $i$ to $j-1$ inclusive \\
 $\match(i,j,x)$ & Indicates if rule string $x$ matches output string $\outsubseq{i}{j}$ \\
 $\fmatch(i,x)$ & Indicates if rule string $x$ matches output string $\outseq$, starting at position $i$ \\
 $\rmatch(j,y)$ & Indicates if rule string $y$ matches output string $\outseq$, ending before position $j$ \\

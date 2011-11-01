@@ -423,7 +423,7 @@ The DP recursion relation is as follows (with $B,C,V,X,u,v,x,y$ defined as in \t
 \begin{eqnarray*}
 \lefteqn{\m(i,j,k,l,A) =} \\
 & &
-\sum_{\rho \in \rulesubset{BIF}{A}} \sum_{m=i}^j W(\rho) \mtip(i,j,V) \mtip(k,l,X) \\
+\sum_{\rho \in \rulesubset{BIF}{A}} W(\rho) \mtip(i,j,V) \mtip(k,l,X) \\
 & & +
 \sum_{\rho \in \rulesubset{ADJ}{A}} \sum_{m=i}^j \sum_{n=k}^l W(\rho) \m(i,m,n,l,B) \m(m,j,k,n,C) \\
 & & +

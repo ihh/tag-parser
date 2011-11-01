@@ -8,7 +8,7 @@ C.~Feschotte.
 \bibitem{EdgarMyers2005}
 R.~C. Edgar and E.~W. Myers.
 \newblock {PILER}: identification and classification of genomic repeats.
-\newblock {\em Bioinformatics}, 21 Suppl 1:i152--8.
+\newblock {\em Bioinformatics}, 21 Suppl 1:i152--8, 2005.
 
 \bibitem{FeschotteKeswaniEtAl2009}
 C.~Feschotte, U.~Keswani, N.~Ranganathan, M.~L. Guibotsy, and D.~Levine.
@@ -21,7 +21,7 @@ C.~Feschotte, U.~Keswani, N.~Ranganathan, M.~L. Guibotsy, and D.~Levine.
 V.~V. Kapitonov and J.~Jurka.
 \newblock A universal classification of eukaryotic transposable elements
   implemented in {R}epbase.
-\newblock {\em Nature reviews. Genetics}, 9(5):411--2; author reply 414.
+\newblock {\em Nature reviews. Genetics}, 9(5):411--2; author reply 414, 2008.
 
 \bibitem{pmid19786494}
 S.~Steinbiss, U.~Willhoeft, G.~Gremme, and S.~Kurtz.
@@ -43,6 +43,16 @@ H.~Matsui, K.~Sato, and Y.~Sakakibara.
 D.~Chiang, A.~K. Joshi, and D.~B. Searls.
 \newblock {{G}rammatical representations of macromolecular structure}.
 \newblock {\em J. Comput. Biol.}, 13:1077--1100, Jun 2006.
+
+\bibitem{Earley70}
+J.~Earley.
+\newblock An efficient context-free parsing algorithm.
+\newblock {\em Communications of the {ACM}}, 13(2):94--102, 1970.
+
+\bibitem{kallmeyer2010parsing}
+L.~Kallmeyer.
+\newblock {\em Parsing Beyond Context-Free Grammars}.
+\newblock Cognitive Technologies. Springer, 2010.
 
 \bibitem{Pfam2008}
 R.~D. Finn, J.~Tate, J.~Mistry, P.~C. Coggill, S.~J. Sammut, Hans-Rudolf Hotz,

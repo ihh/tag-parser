@@ -39,7 +39,7 @@
 %% ** EDIT HERE **
 %% Please insert a running head of 30 characters or less.  
 %% Include it twice, once between each set of braces
-\newcommand\titlestring{Stochastic tree-adjoining grammars for modeling retrotransposons}
+\newcommand\titlestring{Stochastic grammars for transposon sequences}
 \newcommand\authorstring{
 Lawrence Uricchio, Ian Holmes
 }
@@ -88,9 +88,11 @@ Lawrence Uricchio, Ian Holmes
 \newcommand{\eqnlabel}[1]{\label{eqn:#1}}
 
 
-% need cite, check me, and other notes to self
-\newcommand\needcite{{\bf [CITE]}}
-\newcommand\checkme{{\bf [CHECK]}}
+% need cite, check me, and other notes to self and co-authors
+\newcommand\redpen[1]{{\bf \textcolor{red}{#1}} \textcolor{black}{}}
+\newcommand\needcite{\redpen{\bf [CITE]}}
+\newcommand\checkme{\redpen{\bf [CHECK]}}
+\newcommand\writeme{\redpen{\bf [WRITE ME!]}}
 
 
 
@@ -320,7 +322,23 @@ The final column shows the destination tree when all the terminal strings $u,v,x
 }
 \end{table}
 
-\subsection{A parsing algorithm}
+\subsubsection{Length distributions}
+
+\newcommand\outerlen{L_0}
+\newcommand\innerlen{L_1}
+
+To model genomic features, it is extremely useful to augment the TAG framework with length distributions;
+that is, to allow the rule weight $\weight(\rho)$ to depend on distances
+such as $i$, $|\outseq|-l$, $\outerlen = l-i$, $\innerlen = k-j$, $j-i$, $l-k$, $m-i$, $j-m$, $n-k$, $l-n$ or $n-m$.
+
+Note that the TAG framework implicitly allows some length distributions to be constructed, even without such augmentation;
+for example, the ``waiting time'' in a particular state is geometrically-distributed, and by arranging a series of such states,
+one can obtain other distributions, e.g. a negative binomial distribution.
+One can also obtain any distribution over a random variable $x \leq N$ by using $N$ states,
+or approximate any distribution to some degree of precision with a finite number of states.
+However, it is sometimes more convenient simply to allow $\weight$ to depend directly on $(i,j,k,l,m,n)$.
+
+\subsection{A bottom-up (CYK) parsing algorithm}
 
 We can define a general parsing algorithm for TAGs
 that is the equivalent of the CYK (Cocke-Younger-Kasami) algorithm for SCFGs.
@@ -422,12 +440,12 @@ yielding the order in which node labels must be visited in the Inside algorithm.
 
 A suitable (but non-unique) Inside fill order is as follows:
 \begin{itemize}
- \item For $L_1 = 0$ to $|Z|$ (increasing), \quad $i = 0$ to $|Z|-L_1$ (increasing):
+ \item For $\outerlen = 0$ to $|\outseq|$ (increasing), \quad $i = 0$ to $|\outseq|-\outerlen$ (increasing):
  \begin{itemize}
-  \item Let $l = i + L_1$
-  \item For $L_2 = L_1$ to $0$ (decreasing), \quad $j = i$ to $i + L_1 - L_2$ (increasing):
+  \item Let $l = i + \outerlen$
+  \item For $\innerlen = \outerlen$ to $0$ (decreasing), \quad $j = i$ to $i + \outerlen - \innerlen$ (increasing):
   \begin{itemize}
-   \item Let $k = j + L_2$
+   \item Let $k = j + \innerlen$
    \item For $A \in \nodelabels$ (topo-sorted, transition destinations before sources):
    \begin{itemize}
     \item Compute $\m(i,j,k,l,A)$ and store
@@ -441,18 +459,16 @@ A suitable (but non-unique) Inside fill order is as follows:
 \end{itemize}
 
 
-\subsubsection{Length distributions}
+\subsection{A top-down parsing algorithm}
+\seclabel{TopDownParser}
 
-To model genomic features, it is extremely useful to augment the TAG framework with length distributions;
-that is, to allow the rule weight $\weight(\rho)$ to depend on distances
-such as $m-i$, $j-m$, $n-k$, $l-n$, $n-m$, $j-i$, $k-j$, $l-k$, $l-i$ and so on.
+The general idea is to try a top-down chart parser, such as the Earley parser \cite{Earley70}
+(a version of which exists for TAGs \cite{kallmeyer2010parsing})
+that can run very efficiently on preprocessed sequence,
+where the preprocessor augments the sequence with a table of tuples of the form $(i,j,k,l,A,\m)$
+and the parser restricts the iteration to derivations that use some of these $(i,j,k,l,A)$ co-ordinates.
 
-Note that the TAG framework implicitly allows some length distributions to be constructed, even without such augmentation;
-for example, the ``waiting time'' in a particular state is geometrically-distributed, and by arranging a series of such states,
-one can obtain other distributions, e.g. a negative binomial distribution.
-One can also obtain any distribution over a random variable $x \leq N$ by using $N$ states,
-or approximate any distribution to some degree of precision with a finite number of states.
-However, it is often much more convenient and efficient simply to allow $\weight$ to sometimes depend directly on the inside sequence length.
+\writeme
 
 \section{A simple retrotransposon grammar}
 \seclabel{RetroGrammar}
@@ -496,6 +512,11 @@ or GeneWise for finding DNA sequences that code for PFAM protein domains \cite{B
 A very quick heuristic that might achieve most of the benefits of a more rigorous ``hints'' constraint
 would be to divide the genome into windows and only run the grammar on windows which contain $K$ or more of the appropriate hints.
 
+\section{A simple DNA transposon grammar}
+\seclabel{TransposonGrammar}
+
+\writeme
+
 \section{Glossary of mathematical notation}
 
 \noindent
@@ -514,8 +535,11 @@ $\epsilon$ & The empty string \\
 $\terminals^\ast$ & Set of strings over $\terminals$, including the empty string \\
 $\outseq$ & Output sequence \\
 $|\outseq|$ & Length of $\outseq$ \\
-$\outsubseq{i}{j+1}$ & Substring of $\outseq$ from $i$ to $j$ inclusive ($i$ starts at 1) \\
+$i,j,k,l$ & Integer co-ordinates on $\outseq$, with $1 \leq i \leq j \leq k \leq l \leq |\outseq|$ \\
+$m,n$ & Integer co-ordinates on $\outseq$, with $i \leq m \leq j$ and $k \leq n \leq l$ \\
+$\outerlen, \innerlen$ & Integer lengths of $\outseq$-subsequences, with $0 \leq \innerlen = (k-j) \leq \outerlen = (l-i) \leq |\outseq|$ \\
 $\outsubseq{i}{i}$ & The empty string \\
+$\outsubseq{i}{j}$ & (For $j \geq i$) Substring of $\outseq$ from $i$ to $j-1$ inclusive \\
 $\match(i,j,x)$ & Indicates if rule string $x$ matches output string $\outsubseq{i}{j}$ \\
 $\fmatch(i,x)$ & Indicates if rule string $x$ matches output string $\outseq$, starting at position $i$ \\
 $\rmatch(j,y)$ & Indicates if rule string $y$ matches output string $\outseq$, ending before position $j$ \\
@@ -525,6 +549,8 @@ $\mtip(i,l,A)$ & Inside weight for $\outsubseq{i}{l}$ rooted at $A$ \\
 $B,C,U,V,X,Y$ & Labels (or terminal strings) at nodes of the Newick tree $((U,((V,\beta,W)C),X)B)\alpha$ \\
 $u,v,x,y$ & Special symbols for $U,V,X,Y$ when they are terminal strings \\
 \end{tabular}
+
+
 
 % Do NOT remove this, even if you are not including acknowledgments
 \newpage

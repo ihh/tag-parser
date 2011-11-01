@@ -150,8 +150,8 @@ The purpose of this paper is to represent the hybrid modeling approach of LTRdig
 \subsection{Tree-Adjoining Grammars}
 
 We define a minimal normal form of Tree-Adjoining Grammars (TAGs)
-suited to biological sequence analysis,
-as opposed to the linguistic representation elsewhere \cite{JoshiSchabes97}.
+suited to simplified presentation for biological sequence analysis,
+departing somewhat from the usual linguistic representation \cite{JoshiSchabes97}.
 TAGs have previously been used in bioinformatics
 to model pseudoknots and other RNA structures \cite{MatsuiEtAl2005,ChiangJoshiSearls2006}
 and to model local duplications (Hickey and Blanchette, pers. comm.).
@@ -164,7 +164,7 @@ and to model local duplications (Hickey and Blanchette, pers. comm.).
 \newcommand\weight{{\cal W}}
 
 A TAG is a tuple $\grammar=(\nodelabels,\terminals,\startsymbol,\rules,\weight)$ where
-$\nodelabels$ is a finite set of {\em node labels},
+$\nodelabels$ is a finite set of {\em node labels} (or {\em nonterminals}),
 $\terminals$ is a finite set of {\em terminals} (disjoint from $\nodelabels$),
 $\startsymbol \in \nodelabels$ is a distinguished {\em start label},
 $\rules$ is a finite set of {\em transformation rules}
@@ -196,10 +196,13 @@ We can commence a derivation from any {\em initial tree}, but ultimately we will
 %\newcommand\bigrhsE{\Tree[ .$\alpha$ [ .$B$ [ .$C$ $\beta$ ] ] ]}
 %\newcommand\bigrhsF{\Tree[ .$\alpha$ [ $u$ [ .$B$ [ $v$ [ $\beta$ ] $x$ ] ] $y$ ] ]}
 
+\newcommand\tinyrhsBif{\Tree[ .$\alpha$ [ .$V$ $\epsilon$ ] [ .$\beta$ ] [ .$X$ $\epsilon$ ] ]}
+
 \newcommand\tinyrhsA{\Tree[ .$\alpha$ [ .$C$ [ .$U$ $\epsilon$ ] [ .$\beta$ ] ] ]}
 \newcommand\tinyrhsB{\Tree[ .$\alpha$ [ .$C$ [ .$\beta$ ] [ .$Y$ $\epsilon$ ] ] ]}
 \newcommand\tinyrhsC{\Tree[ .$\alpha$ [ .$V$ $\epsilon$ ] [ .$C$ $\beta$ ] ]}
 \newcommand\tinyrhsD{\Tree[ .$\alpha$ [ .$C$ $\beta$ ] [ .$X$ $\epsilon$ ] ]}
+
 \newcommand\tinyrhsE{\Tree[ .$\alpha$ [ .$B$ [ .$C$ $\beta$ ] ] ]}
 %\newcommand\tinyrhsF{\Tree[ .$\alpha$ $u$ [ .$C$ $v$ $\beta$ $x$ ] $y$ ]}
 \newcommand\tinyrhsF{\abtree{C}}
@@ -218,21 +221,29 @@ We can commence a derivation from any {\em initial tree}, but ultimately we will
 
 \newcommand\rhsGeneric{\rhs{B}{C}{U}{V}{X}{Y}}
 
+\newcommand\rhsBif{\Tree[ .$\alpha$ [ .$V$ $\epsilon$ ] $\beta$ [ .$X$ $\epsilon$ ] ]}
+
 \newcommand\rhsA{\Tree[ .$\alpha$ [ .$U$ $\epsilon$ ] [ .$C$ $v$ $\beta$ $x$ ] $y$ ]}
 \newcommand\rhsB{\Tree[ .$\alpha$ $u$ [ .$C$ $v$ $\beta$ $x$ ] [ .$Y$ $\epsilon$ ] ]}
 \newcommand\rhsC{\Tree[ .$\alpha$ $u$ [ .$C$ [ .$V$ $\epsilon$ ] $\beta$ $x$ ] $y$ ]}
 \newcommand\rhsD{\Tree[ .$\alpha$ $u$ [ .$C$ $v$ $\beta$ [ .$X$ $\epsilon$ ] ] $y$ ]}
-\newcommand\rhsE{\rhsnoepsilon{B}{C}{u}{v}{x}{y}}
+
+%\newcommand\rhsE{\rhsnoepsilon{B}{C}{u}{v}{x}{y}}
+\newcommand\rhsE{\tinyrhsE}
 \newcommand\rhsF{\rhsnob{C}{u}{v}{x}{y}}
+
+\newcommand\newickBif{((\beta)A)\alpha \to (V,\beta,X)\alpha}
 
 \newcommand\newickA{((\beta)A)\alpha \to (U,((v,\beta,x)C),y)\alpha}
 \newcommand\newickB{((\beta)A)\alpha \to (u,((v,\beta,x)C),Y)\alpha}
 \newcommand\newickC{((\beta)A)\alpha \to (u,((V,\beta,x)C),y)\alpha}
 \newcommand\newickD{((\beta)A)\alpha \to (u,((v,\beta,X)C),y)\alpha}
-\newcommand\newickE{((\beta)A)\alpha \to ((u,((v,\beta,x)C),y)B)\alpha}
+
+%\newcommand\newickE{((\beta)A)\alpha \to ((u,((v,\beta,x)C),y)B)\alpha}
+\newcommand\newickE{((\beta)A)\alpha \to (((\beta)C)B)\alpha}
 \newcommand\newickF{((\beta)A)\alpha \to (u,((v,\beta,x)C),y)\alpha}
 
-\newcommand\longnewickA{((\beta)A)\alpha \to ((\epsilon)U,((v,\beta,x)C),y)\alpha}
+\newcommand\longnewickBif{((\beta)A)\alpha \to ((\epsilon)V,\beta,(\epsilon)X)\alpha}
 
 Each ``intermediate tree'' is, formally, an ordered tree whose nodes are labeled from
 $(\nodelabels \cup \terminals^\ast)$.
@@ -262,11 +273,12 @@ The depth-first order of leaves in the general tree shown above is $(U,V,\beta,X
 
 \subsubsection{Context-free grammars as a subset of TAGs}
 
-We can further restrict the rules of \tabref{RuleTypes} to recover the basic repertoire of a context-free grammar.
-For example, bifurcation rules ($A \to U\ C$)
-may be interpreted as type-1 rules from \tabref{RuleTypes} (with $v=x=y=\epsilon$),
-while emission rules ($A \to u\ C\ y$)
-may be interpreted as type-6 rules (with $v=x=\epsilon$),
+We can further restrict the rules of \tabref{RuleTypes} to recover the basic repertoire of a context-free grammar,
+or the weighted (stochastic) version, the SCFG.
+For example, SCFG rules of the form $A \to V\ X$, where $A,V,X$ are nonterminals,
+may be interpreted as bifurcation rules in \tabref{RuleTypes},
+while SCFG rules of the form $A \to u\ C\ y$, where $u,y$ are terminal strings and $C$ is either a nonterminal or the empty string,
+may be interpreted as emission rules in \tabref{RuleTypes}.
 
 \subsubsection{Derivation weights}
 
@@ -283,42 +295,33 @@ The initial tree, in this representation, is $((\epsilon)S)\epsilon$.
 In the table, we have omitted the placeholder $\epsilon$'s at leaf nodes,
 so that (for example) the rule
 \[
-\newickA
+\newickBif
 \]
 should strictly be read as
 \[
-\longnewickA
+\longnewickBif
 \]
 
 Let $\rulesubset{n}{A}$ denote the subset of rules of type $n$ (according to \tabref{RuleTypes})
 where the left-hand side is $((\beta)A)\alpha$ for a given $A \in \nodelabels$.
 
-Note the special case of a type-6 rule where all the terminal strings are empty,
+Note the special case of an emission rule where all the terminal strings are empty,
 $((\beta)A)\alpha \to ((\beta)C)\alpha$.
 Such a rule is referred to as a {\em transition} and may be written more compactly as $A \to C$.
 
 \begin{table}
 \tiny
-\begin{tabular}{m{.2in}m{.2in}m{.2in}m{1in}cm{1.2in}}
-\centerline{Type} & \centerline{From} & & \centerline{To} & Newick representation & When $uvxy=\epsilon$:
+\begin{tabular}{m{.4in}m{.2in}m{.2in}m{1in}c}
+\centerline{Type} & \centerline{From} & & \centerline{To} & Newick representation
 \\ \hline
-(1) &
-\lhs & $\to$ & \rhsA & $\newickA$ & \tinyrhsA
+(BIFURC) &
+\lhs & $\to$ & \rhsBif & $\newickBif$
 \\ \hline
-(2) &
-\lhs & $\to$ & \rhsB & $\newickB$ & \tinyrhsB
+(ADJOIN) &
+\lhs & $\to$ & \rhsE & $\newickE$
 \\ \hline
-(3) &
-\lhs & $\to$ & \rhsC & $\newickC$ & \tinyrhsC
-\\ \hline
-(4) &
-\lhs & $\to$ & \rhsD & $\newickD$ & \tinyrhsD
-\\ \hline
-(5) &
-\lhs & $\to$ & \rhsE & $\newickE$ & \tinyrhsE
-\\ \hline
-(6) &
-\lhs & $\to$ & \rhsF & $\newickF$ & \tinyrhsF
+(EMIT) &
+\lhs & $\to$ & \rhsF & $\newickF$
 \\ \hline
 \end{tabular}
 \normalsize
@@ -327,7 +330,7 @@ Such a rule is referred to as a {\em transition} and may be written more compact
 Types of transformation rule (i.e. tree adjunction rule) used in this paper.
 Here $\alpha,\beta$ represent any subtree;
 $A \in \nodelabels$ is the source node label;
-$B,C,U,V,X,Y \in (\nodelabels \cup \{\epsilon\})$ are the destination node labels;
+$B,C,V,X \in (\nodelabels \cup \{\epsilon\})$ are the destination node labels;
 $\epsilon$ is the empty string;
 and
 $u,v,x,y \in \terminals^\ast$ are (possibly empty) terminal strings.
@@ -372,7 +375,7 @@ Let $\outsubseq{i}{i} = \epsilon$.
 \newcommand\kxmatch{\match_{kx}}
 \newcommand\lymatch{\match_{ly}}
 
-Define some indicator functions to match output substrings to rules
+Define some indicator functions to match output substrings to emit rules
 \begin{eqnarray*}
 \match(i,j,x) & = & \delta \left( \outsubseq{i}{j}\ =\ x \right) \\
 \fmatch(i,x) & = & \match(i,i+|x|,x) \\
@@ -416,35 +419,23 @@ or the sequence $\outsubseq{i}{l}$ (for $\mtip$).
 
 \subsubsection{The dynamic programming recursion}
 
-The DP recursion relation is as follows (with $B,C,U,V,X,Y,u,v,x,y$ defined as in \tabref{RuleTypes})
+The DP recursion relation is as follows (with $B,C,V,X,u,v,x,y$ defined as in \tabref{RuleTypes})
 \begin{eqnarray*}
 \lefteqn{\m(i,j,k,l,A) =} \\
 & &
-\sum_{\rho \in \rulesubset{1}{A}} \sum_{m=i}^j W(\rho) \m(m,j-|v|,k+|x|,l-|y|,C) \mtip(i,m,U) \jvmatch \kxmatch \lymatch \\
+\sum_{\rho \in \rulesubset{BIF}{A}} \sum_{m=i}^j W(\rho) \mtip(i,j,V) \mtip(k,l,X) \\
 & & +
-\sum_{\rho \in \rulesubset{2}{A}} \sum_{n=k}^l W(\rho) \m(i+|u|,j-|v|,k+|x|,n,C) \mtip(n,l,Y) \iumatch \jvmatch \kxmatch \\
+\sum_{\rho \in \rulesubset{ADJ}{A}} \sum_{m=i}^j \sum_{n=k}^l W(\rho) \m(i,m,n,l,B) \m(m,j,k,n,C) \\
 & & +
-\sum_{\rho \in \rulesubset{3}{A}} \sum_{m=i}^j W(\rho) \m(i+|u|,m,k+|x|,l-|y|,C) \mtip(m,j,V) \iumatch \kxmatch \lymatch \\
-& & +
-\sum_{\rho \in \rulesubset{4}{A}} \sum_{n=k}^l W(\rho) \m(i+|u|,j-|v|,n,l-|y|,C) \mtip(k,n,X) \iumatch \jvmatch \lymatch \\
-& & +
-\sum_{\rho \in \rulesubset{5}{A}} \sum_{m=i}^j \sum_{n=k}^l W(\rho) \m(i+|u|,m,n,l-|y|,B) \m(m,j-|v|,k+|x|,n,C) \iumatch \jvmatch \kxmatch \lymatch \\
-& & +
-\sum_{\rho \in \rulesubset{6}{A}} W(\rho) \m(i+|u|,j-|v|,k+|x|,l-|y|,C)
- \iumatch \jvmatch \kxmatch \lymatch
+\sum_{\rho \in \rulesubset{EMT}{A}} W(\rho) \m(i+|u|,j-|v|,k+|x|,l-|y|,C) \iumatch \jvmatch \kxmatch \lymatch
 \end{eqnarray*}
 
 Note that for $\m$ to be exactly computable, we require that there are no {\em null cycles} in the grammar.
 A null cycle is a series of transformations that, when applied consecutively to a given tree $\alpha$, yield the original tree $\alpha$ again,
 or one that is trivially related to it (e.g. a tree that is identical to $\alpha$ after $\epsilon$-labeled nodes of degree $<3$ have been removed).
 Null cycles frequently arise via consecutive transitions of the form $A \to B$ followed by $B \to A$,
-but there are other possibilities too (for example, a type-1 bifurcation rule $((\beta)A)\alpha \to ((U,\beta)C)\alpha$
-followed by two transitions $U \to \epsilon$ and $C \to A$).
-
-A {\em Lexicalized TAG} (LTAG) has the property that one of $u,v,x,y$ is always a nonempty terminal string,
-guaranteeing that it contains no null cycles,
-and ensuring that every rule explicitly matches some output characters.
-LTAGs are popular in linguistics, though the constraint is possibly too stringent to be helpful for bioinformatics grammars.
+but there are other possibilities too (for example, a bifurcation rule $((\beta)A)\alpha \to (V,\beta,X)\alpha$
+followed by two transitions $V \to \epsilon$ and $X \to A$).
 
 \subsubsection{Fill order}
 
@@ -490,8 +481,8 @@ We are particularly interested in following class of grammars that describe spec
 
 \subsection{SCFG and LTR components}
 
-The LTRs can be generated by type-6 rules (e.g. with $v=y=\epsilon$) followed either by a transition to the transposon interior,
-or (optionally) a type-5 adjunction rule, which may be an easier event on which to impose a hint-requirement constraint.
+The LTRs can be generated by emission rules (e.g. with $v=y=\epsilon$) followed either by a transition to the transposon interior,
+or (optionally) an adjunction rule, which may be an easier event on which to impose a hint-requirement constraint.
 
 \subsection{Developing the SCFG sub-grammar for transposon contents}
 
@@ -537,10 +528,10 @@ would be to divide the genome into windows and only run the grammar on windows w
 Symbol & Meaning \\
 \hline
 $\grammar$ & Grammar \\
-$\nodelabels$ & Set of node labels \\
+$\nodelabels$ & Set of node labels (nonterminals) \\
 $\terminals$ & Set of terminals \\
 $\rules$ & Set of transformation rules \\
-$\rulesubset{n}{A}$ & Set of transformation rules of type $n$ (see \tabref{RuleTypes}) whose LHS is $((\beta)A)\alpha$ \\
+$\rulesubset{T}{A}$ & Set of type-$T$ transformation rules (see \tabref{RuleTypes}) with $((\beta)A)\alpha$ on LHS \\
 $\alpha,\beta$ & Arbitrary ordered node-labeled trees \\
 $\weight$ & Rule weight function \\
 $\seqweight{\alpha}{\outseq}$ & Sum, over derivations of $\outseq$ from $\alpha$, of product over derivation rule weights \\
@@ -559,7 +550,7 @@ $\rmatch(j,y)$ & Indicates if rule string $y$ matches output string $\outseq$, e
 $\iumatch,\jvmatch,\kxmatch,\lymatch$ & Rule string matchers; $\match_{ns}$ matches string $s$ ending/starting at position $n$ \\
 $\m(i,j,k,l,A)$ & Inside weight for $\outsubseq{i}{j}$ (left) and $\outsubseq{k}{l}$ (right) rooted at $A$ \\
 $\mtip(i,l,A)$ & Inside weight for $\outsubseq{i}{l}$ rooted at $A$ \\
-$B,C,U,V,X,Y$ & Labels (or terminal strings) at nodes of the Newick tree $((U,((V,\beta,W)C),X)B)\alpha$ \\
+$B,C,U,V,X,Y$ & Labels (nonterminal symbols, terminal strings, or $\epsilon$) at nodes of the Newick tree $((U,((V,\beta,W)C),X)B)\alpha$ \\
 $u,v,x,y$ & Special symbols for $U,V,X,Y$ when they are terminal strings \\
 \end{tabular}
 

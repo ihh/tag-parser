@@ -391,7 +391,12 @@ Define some indicator functions to match output substrings to emit rules
 \newcommand\m{M}
 \newcommand\mtip{\m'}
 
-Introducing the placeholder $\gamma$ as an additional terminal, define
+Dynamic programming is breaking down a problem recursively into a lot of smaller problems,
+whose solutions can be tabulated and re-used in computing the bigger problem.
+Here, the big problem is to find the probability (weight) that the initial symbol $\startsymbol$ will derive the output sequence $\outseq$.
+The smaller problems are the probabilities that a given symbol $A$ will derive sequences $\outsubseq{i}{j}$ to the left and $\outsubseq{k}{l}$ to the right.
+
+Introducing the additional terminal $\gamma$ as a placeholder for the sequence $\outsubseq{j}{k}$, define
 \begin{eqnarray*}
 \m(i,j,k,l,A) & = & \seqweight{((\gamma)A)\epsilon}{\outsubseq{i}{j} \gamma \outsubseq{k}{l}} \\
 \mtip(i,l,A) & = & \seqweight{((\epsilon)A)\epsilon}{\outsubseq{i}{l}}
@@ -416,6 +421,11 @@ Note also the following boundary conditions:
 
 The {\em inside sequence} refers to the sequences $\outsubseq{i}{j}$ and $\outsubseq{k}{l}$ (for $\m$),
 or the sequence $\outsubseq{i}{l}$ (for $\mtip$).
+
+The final derivation weight is
+\[
+\seqweight{\startsymbol}{\outseq} = \mtip(1,|\outseq|,\startsymbol)
+\]
 
 \subsubsection{The dynamic programming recursion}
 
